@@ -1,34 +1,14 @@
-function isFieldFilled(value) {
-    if (value && typeof value === "string" && value.trim().length > 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
+const isFieldFilled = value => Boolean(value && typeof value === "string" && value.trim().length > 0);
 
-function isEmailValid(email) {
-    if (email.includes("@")) {
-        return true;
-    } else {
-        return false;
-    }
-}
+// Сначала написала как придумала сама, но там получилась простынь. Пошла гуглить, как короче, и не нашла никаких вариантов, кроме как добавить регулярное выражение.
+const isEmailValid = email => {
+    if (typeof email !== "string") return false;
+    return /^[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/.test(email.trim()) && email.trim().length <= 254;
+};
 
-function isNumber(value) {
-    if (typeof value === "number" && !isNaN(value)) {
-        return true;
-    } else {
-        return false;
-    }
-}
+const isNumber = value => Boolean(typeof value === "number" && !isNaN(value));
 
-function isAdult(age) {
-    if (age >= 18 && age <= 120) {
-        return true;
-    } else {
-        return false;
-    }
-}
+const isAgeValid = age => Boolean(age >= 18 && age <= 120);
 
 function isFormValid(email, name, age, agreed) {
 
@@ -55,12 +35,12 @@ function isFormValid(email, name, age, agreed) {
         return false;
     }
 
-    if (isNumber(age) && isAdult(age)) {
+    if (isNumber(age) && isAgeValid(age)) {
         console.log("ok");
     } else if (!isNumber(age)) {
         console.log("Error! Age has to be a number");
         return false;
-    } else if (!isAdult(age)) {
+    } else if (!isAgeValid(age)) {
         console.log("Error! Age has to be in between 18 and 120");
         return false;
     }
@@ -84,7 +64,7 @@ if (isFormValid(31, "Anna", "21", true)) {
     console.log("Registration denied. Please fix the errors above.");
 }
 
-if (isFormValid("a@a", "Anna", 21, true)) {
+if (isFormValid("example@gmail.com", "Anna", 21, true)) {
     console.log("Registration allowed!");
 } else {
     console.log("Registration denied. Please fix the errors above.");
